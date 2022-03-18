@@ -1,0 +1,13 @@
+binance-client==1.0.0
+ccxt==1.50.51
+Flask==2.0.1
+heroku==0.1.4
+Jinja2==3.0.1
+pandas==1.2.4
+pandas-datareader==0.10.0
+Pillow==8.3.2
+pylint==2.8.2
+python-binance==1.0.10
+requests==2.26.0
+gunicorn==20.1.0
+dnspython==2.0.0

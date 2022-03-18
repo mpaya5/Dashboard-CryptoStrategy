@@ -1,0 +1,332 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+
+
+<div class="video-bg">
+    <video width="320" height="240" autoplay loop muted>
+     <source src="https://assets.codepen.io/3364143/7btrrd.mp4" type="video/mp4">
+   Your browser does not support the video tag.
+   </video>
+   </div>
+   <div class="dark-light">
+       <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" /></svg>
+      </div>
+   <div class="app">
+    <div class="header">
+      <div class="logo-live">
+        <div class="pyramid">
+          <div class="square">
+            <div class="triangle"></div>
+            <div class="triangle"></div>
+            <div class="triangle"></div>
+            <div class="triangle"></div>
+          </div>
+        </div>
+        
+        <div class="pyramid inverse">
+          <div class="square">
+            <div class="triangle"></div>
+            <div class="triangle"></div>
+            <div class="triangle"></div>
+            <div class="triangle"></div>
+          </div>
+        </div>
+      </div>
+     <p><span class="rog">Cross</span><span class="logo">WAVE</span></p>
+     <div class="header-menu">
+      <a class="menu-link is-active" href="#chart">Benefit</a>
+      <a class="menu-link" href="#positions">Transactions</a>
+      <a class="menu-link" href="#logs">Logs</a>
+      <a class="menu-link" href="#payments">Payments</a>
+     </div>
+     
+     <div class="header-profile">
+        <i class="fa fa-user"></i>
+        <a><span class="rog" style="margin-right: 5px;">Welcome</span> {{name}}</a>
+    </div>
+    </div>
+    <div class="wrapper">
+     <div class="left-side">
+      <div class="side-wrapper">
+       <div class="side-title" id="benefit">Benefit</div>
+       <div class="side-menu">
+        <a href="#chart">
+         <i class="fa fa-line-chart"></i>
+         Chart
+        </a>
+        <a href="#balance">
+         <i class="fa fa-balance-scale"></i>
+         Balance
+        </a>
+       </div>
+      </div>
+      <div class="side-wrapper">
+       <div class="side-title">Transactions</div>
+       <div class="side-menu">
+        <a href="#positions">
+         <i class="fa fa-calendar"></i>
+         Positions
+        </a>
+        <a href="#orders">
+         <i class="fa fa-tasks"></i>
+         Orders 
+        </a>
+       </div>
+      </div>
+      <div class="side-wrapper">
+       <div class="side-title">Data</div>
+       <div class="side-menu">
+        <a href="#logs">
+         <i class="fa fa-book"></i>
+         Logs
+        </a>
+        <a href="#">
+         <i class="fa fa-bell-o"></i>
+         Alerts
+        </a>
+        
+       </div>
+      </div>
+      <div class="side-wrapper">
+       <div class="side-title">Payments</div>
+       <div class="side-menu">
+        <a href="#payments">
+         <i class="fa fa-credit-card"></i>
+         To Pay
+        </a>
+        <a href="#payments">
+          <i class="fa fa-address-book-o"></i>
+          Address
+        </a>
+        <a href="#payments">
+          <i class="fa fa-paper-plane-o"></i>
+          Donate
+        </a>
+       </div>
+      </div>
+     </div>
+     <div class="main-container">
+      <div class="content-wrapper">
+        <div class="content-wrapper-header">
+          <div class="content-wrapper-context">
+           <h3 class="img-content">
+            <i class="fa fa-newspaper-o" style=" font-size: 25px;"></i>
+            News
+           </h3>
+           <div class="content-text">This <strong>Beta dashboard</strong> is only available for PC, not for mobile. The devs have decided to invest their times in the platform, and let working this dashboard until the platform will be launched.</div>
+           <button class="content-button"><a href="#donate" style="text-decoration: none; color: white;">Donate for help the developers</a></button>
+          </div>
+          <img class="content-wrapper-img" src="https://assets.codepen.io/3364143/glass.png" alt="">
+         </div>
+       <div class="content-section">
+        <div class="content-section-title" id="chart"> Chart ~ Last 5 elements</div>
+        <canvas id="myChart"></canvas>
+
+        <script src="{{ url_for("static", filename="chart.js") }}"></script>
+        <script>
+          var ctx = document.getElementById('myChart').getContext('2d');
+          var chart = new Chart(ctx, {
+              // The type of chart we want to create
+              type: 'line',
+    
+              // The data for our dataset
+              data: {
+                  labels: {{ labels | safe }},
+                  datasets: [{
+                      color: '#8354e0',
+                      label: "Balance",
+                      data: {{ values | safe }},
+                      fill: true,
+                      backgroundColor: 'rgba(131, 84, 224, 0.2)',
+                      borderColor: '#8354e0',
+                      
+                  }]
+              },
+    
+              // Configuration options go here
+              options: {}
+          });
+    
+          angular.module("app", []).controller("coin", function($scope, $http) {
+            $http
+              .get("https://api.coindesk.com/v1/bpi/currentprice.json")
+              .then(function(res) {
+                $scope.content = res.data;
+                $scope.priceGBP = $scope.content.bpi.GBP.rate;
+              });
+          });
+        </script>
+        
+
+       </div>
+       <div class="content-section">
+        <div class="content-section-title" id="balance">Balance</div>
+        <div class="apps-card">
+         <div class="app-card">
+          <span>
+            <i class="fa more fa-btc"></i>
+           TOKEN
+          </span>
+          <div class="app-card-buttons">
+           <p>{{symbol}}</p>
+          </div>
+         </div>
+         <div class="app-card">
+          <span>
+            <i class="fa more fa-money"></i>
+           TOTAL GAINS
+          </span>
+          <div class="app-card-buttons">
+           <p>{{simbolo}}{{total_gains}}</p>
+           
+          </div>
+         </div>
+         <div class="app-card">
+          <span>
+            <i class="fa more fa-bank"></i>
+           BALANCE ACCOUNT
+          </span>
+          <div class="app-card-buttons">
+           <p>{{last_balance}}USD</p>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="content-section" >
+         <div class="content-section-title" id="positions">
+          Last Positions
+         </div>
+         <ul>
+           
+           {% for i in range(5) %}
+           
+          <li class="transaction">
+            <div class="transaction_id">
+            {{transaction[-i]['orderId']}} 
+            </div>
+            <span class="status">
+              {% if transaction[-i]['side'] == 'SELL'%}
+             <span class="status-circle"></span>
+             {{transaction[-i]['side']}}/{{transaction[-i]['positionSide']}}
+             {% endif %}
+
+              {% if transaction[-i]['side'] == 'BUY' %}
+              <span class="status-circle green"></span>
+              {{transaction[-i]['side']}}/{{transaction[-i]['positionSide']}}
+
+              {% endif %}
+            </span>
+
+            <div class="button-wrapper">
+             <button class="content-button status-button open">{{transaction[-i]['price']}}</button>
+             <div class="menu">
+              <button class="dropdown">
+               <ul>
+                 <li><a href="">QUANTITY</a></li>
+                <li><a href="#">{{transaction[-i]['quoteQty']}}</a></li>
+                <li><a href="#">COMMISSION</a></li>
+                <li><a href="#">{{transaction[-i]['commission']}}</a></li>
+
+                
+               </ul>
+              </button>
+             </div>
+            </div>
+           </li>
+
+           {% endfor %}
+         </ul>
+       </div>
+
+       <div class="content-section" >
+        <div class="content-section-title" id="orders">
+         Last Orders
+        </div>
+        <ul>
+          {% for i in range(5) %}
+         <li class="transaction">
+           <div class="transaction_id">
+           {{order[-i]['orderId']}} 
+           </div>
+           <span class="status">
+             {% if order[-i]['status'] == 'CANCELED'%}
+             <span class="status-circle"></span>
+              {{order[-i]['status']}}/{{order[-i]['positionSide']}}
+            
+            {% endif %}
+
+             {% if order[-i]['status'] == 'FILLED' %}
+             <span class="status-circle green"></span>
+             {{order[-i]['status']}}/{{order[-i]['positionSide']}}
+
+             {% endif %}
+           </span>
+
+           <div class="button-wrapper">
+            <button class="content-button status-button open">{{order[-i]['cumQuote']}}</button>
+           </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title" id="logs">
+          Last Logs
+          </div>
+          <ul>
+            {% for i in range(5) | reverse %}
+            <li>
+              {{logs.values[i][0]}}
+            </li>
+            {% endfor %}
+          </ul>
+
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-title" id="payments">
+          Payments
+        </div>
+        <div class="apps-card">
+          <div class="app-card">
+            <span>
+              <i class="fa fa-credit-card more"></i>
+              TO PAY
+            </span>
+            <div class="app-card-buttons">
+              <p>With USDT or BNB: <strong>{{to_pay}}</strong></p>
+            </div>
+          </div>
+          <div class="app-card">
+            <span>
+              <i class="fa fa-address-book-o more"></i>
+              ADDRESS
+            </span>
+            <div class="app-card-buttons">
+              <p style="font-size: 10px;margin: 22px 0px;">
+                0xbC9355B8f9530d13d884875a1C67f06a379b0Aba
+              </p>
+            </div>
+          </div>
+          <div class="app-card">
+            <span>
+              <i class="fa fa-paper-plane-o more"></i>
+              DONATE
+            </span>
+            <div class="app-card-buttons">
+              <p>We gladly accept donations</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      </div>
+     </div>
+    </div>
+    <div class="overlay-app"></div>
+   </div>
+
+   {% endblock %}
