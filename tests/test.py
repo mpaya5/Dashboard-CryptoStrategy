@@ -4,12 +4,6 @@ import pandas as pd
 import datetime
 import json, ccxt, csv
 
-
-
-
-API_KEY = "k400uR1YOiTOqyuv93pTtCwlrSUZu3qYL04WDDemcoUGnMxzCOH9N6TyygfYjjGH"
-API_SECRET = "ppTHWC6Htqsjm0r7KETuQphzPqizXewGAInBtaPPmPANQNaJDFmeWUtJZgYYFagf"
-
 SYMBOL = "SRMUSDT"
 symbol_form = "SRM/USDT"
 
